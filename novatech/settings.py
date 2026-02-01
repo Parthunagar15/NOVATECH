@@ -11,7 +11,7 @@ SECRET_KEY = 'django-insecure-novatech-dev-key-change-in-production-abc123xyz'
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*', '.vercel.app']
 
 # ─── APPS ─────────────────────────────────────────────────────────────────────
 INSTALLED_APPS = [
