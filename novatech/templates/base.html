@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}NovaTech{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+</head>
+
+<!--
+  Toast attributes are injected by Django's messages framework.
+  views.py sets messages.success / info / error before redirect;
+  this template reads the first message and passes it to JS via data-* attrs.
+-->
+<body
+  {% if messages %}
+    data-toast-msg="{{ messages|first }}"
+    data-toast-type="{% if messages|first|lower|cut:' ' == 'welcome' %}success{% elif messages|first|lower|cut:' ' == 'account' %}success{% elif messages|first|lower|cut:' ' == "you've" %}info{% else %}success{% endif %}"
+  {% endif %}
+>
+
+  <!-- ── NAVBAR ─────────────────────────────────────────── -->
+  <nav class="navbar">
+    <a href="{% if user.is_authenticated %}{% url 'home' %}{% else %}{% url 'login' %}{% endif %}" class="logo">
+      Nova<span>Tech</span>
+    </a>
+    <div class="nav-links">
+      {% if user.is_authenticated %}
+        <a href="{% url 'home' %}"    class="nav-link {% if request.path == '/' %}active{% endif %}">Home</a>
+        <a href="{% url 'about' %}"   class="nav-link {% if request.path == '/about/' %}active{% endif %}">About</a>
+        <a href="{% url 'contact' %}" class="nav-link {% if request.path == '/contact/' %}active{% endif %}">Contact</a>
+        <a href="{% url 'logout' %}"  class="nav-link btn-outline">Logout</a>
+      {% else %}
+        <a href="{% url 'login' %}"  class="nav-link {% if request.path == '/login/' %}active{% endif %}">Login</a>
+        <a href="{% url 'signup' %}" class="nav-link btn-accent {% if request.path == '/signup/' %}active{% endif %}">Sign Up</a>
+      {% endif %}
+    </div>
+  </nav>
+
+  <!-- ── TOAST ──────────────────────────────────────────── -->
+  <div id="toast" class="toast"></div>
+
+  <!-- ── PAGE CONTENT ───────────────────────────────────── -->
+  {% block content %}{% endblock %}
+
+  <!-- ── SCRIPTS ────────────────────────────────────────── -->
+  <script src="{% static 'js/main.js' %}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

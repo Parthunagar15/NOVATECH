@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Login — NovaTech{% endblock %}
+
+{% block content %}
+<div class="page form-page">
+  <div class="form-container">
+
+    <!-- Header -->
+    <div class="form-header">
+      <h2>Welcome back</h2>
+      <p>Sign in to your NovaTech account</p>
+    </div>
+
+    <!-- General error banner (shown when credentials are wrong) -->
+    {% if error %}
+      <div class="error-banner">⚠ {{ error }}</div>
+    {% endif %}
+
+    <!-- Login Form -->
+    <form method="POST" novalidate>
+      {% csrf_token %}
+
+      <!-- Email -->
+      <div class="form-group">
+        <label for="id_email">Email Address</label>
+        <input
+          type="text"
+          id="id_email"
+          name="email"
+          class="form-input"
+          placeholder="you@example.com"
+          value="{{ request.POST.email }}"
+          autocomplete="off"
+        />
+      </div>
+
+      <!-- Password -->
+      <div class="form-group">
+        <label for="id_password">Password</label>
+        <div class="input-wrap">
+          <input
+            type="password"
+            id="id_password"
+            name="password"
+            class="form-input"
+            placeholder="••••••••"
+            style="padding-right: 2.8rem;"
+          />
+          <button type="button" class="toggle-pass" aria-label="Toggle password">👁</button>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" class="btn-submit">Sign In</button>
+    </form>
+
+    <!-- Footer link -->
+    <div class="form-footer">
+      Don't have an account? <a href="{% url 'signup' %}">Sign up</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
